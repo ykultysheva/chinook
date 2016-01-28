@@ -24,26 +24,30 @@ Check out [W3Schools' SQL Reference](http://www.w3schools.com/sql/sql_syntax.asp
 1) Count how many tracks belong to the MediaType "Protected MPEG-4 video file".
 ```SQL
 /* Add your answer below */
-
+SELECT COUNT(media_type_id) FROM tracks WHERE media_type_id = 4;
+-- 214 tracks
 ```
 
 2) Find the least expensive Track that has the Genre "Electronica/Dance".
 ```SQL
 /* Add your answer below */
+SELECT * FROM tracks WHERE genre_id = 15 ORDER BY unit_price DESC;
 
-```
 
 3) Find the all the Artists whose names start with A.
 ```SQL
 /* Add your answer below */
 
 ```
+SELECT name FROM artists WHERE name ILIKE 'A%';
 
 4) Find all the Tracks that belong to the first Playlist.
 ```SQL
 /* Add your answer below */
 
 ```
+
+SELECT * FROM tracks INNER JOIN playlists_tracks ON playlists_tracks.track_id = tracks.id;
 
 ## Active Record Query Interface
 In order to complete these exercises, you'll need to launch your Rails console with
@@ -143,25 +147,34 @@ Of course, these can be done as one or more steps.
 ```ruby
 # Enter your answer below
 
-```
+Track.where(genre_id: 17).count
+
 2) Find the most expensive Track that has the MediaType "MPEG audio file".
 ```ruby
 # Enter your answer below
+
+Track.where(media_type_id: 1).order(unit_price: :desc).limit(1)[0].name
 
 ```
 3) Find the 2 oldest Artists.
 ```ruby
 # Enter your answer below
 
+Artist.order(created_at: :asc)[0..1]
 ```
 4) Find all the Tracks that belong to the first Playlist.
 ```ruby
 # Enter your answer below
+
+Playlist.first.tracks
 
 ```
 5) Find all the Tracks that belong to the 2 most recent playlists. *(HINT: This takes at least two ActiveRecord queries)*
 ```ruby
 # Enter your answer below
 
-```
+two = Playlist.order(created_at: :desc)[0..1]
 
+two.map {|playlist| playlist.tracks}
+
+```
